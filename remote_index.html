@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Crack Time Prediction</title>
+</head>
+<body>
+    <h1>Password Crack Time Prediction</h1>
+    <label for="password">Enter Password:</label>
+    <input type="text" id="password" name="password">
+    <button onclick="predictTime()">Predict Time</button>
+    <p id="predictionResult"></p>
+    <script>
+        async function predictTime() {
+            const password = document.getElementById('password').value;
+            // const url = 'https://corsproxy.io/?' + encodeURIComponent('https://time-to-crack-password-temp.onrender.com/api/predict');
+            const url = 'https://time-to-crack-password-temp.onrender.com/api/predict'
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ password }),
+            });
+            console.log(resp);
+            if (resp.ok) {
+                const res = await resp.json();
+                console.log(res);
+                const data = res['time_sec'];
+                document.getElementById('predictionResult').innerText = `Time to crack is: ${data} seconds`;
+            } else {
+                console.error('Error:', resp.statusText);
+                document.getElementById('predictionResult').innerText = 'Error predicting time';
+            }
+        }
+    </script>
+</body>
+</html>
