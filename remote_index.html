@@ -71,7 +71,7 @@
             }
 
             if (seconds > 0) {
-                timeString += `${seconds} Seconds`;
+                timeString += `${Math.floor(seconds)} Seconds`;
             }
 
             return timeString.replace(/, $/, '');
