@@ -38,13 +38,26 @@
         }
 
         function formatTime(seconds) {
-            const year = Math.floor(seconds / (3600 * 24 * 365));
+            const centuries = Math.floor(seconds / (3600 * 24 * 365 * 100));
+            const years = Math.floor(seconds % (3600 * 24 * 365 * 100) / (3600 * 24 * 365));
             const days = Math.floor(seconds % (3600 * 24 * 365) / (3600 * 24));
             const hours = Math.floor(seconds % (3600 * 24) / 3600);
             const minutes = Math.floor(seconds % 3600 / 60);
             const sec = Math.floor(seconds % 60);
 
-            return `${year} Years, ${days} Days, ${hours} Hours, ${minutes} Minutes, and ${sec} Seconds`;
+            if (centuries > 0) {
+                return `${centuries} Centuries`;
+            } else if (years > 0) {
+                return `${years} Years`;
+            } else if (days > 0) {
+                return `${days} Days`;
+            } else if (hours > 0) {
+                return `${hours} Hours`;
+            } else if (minutes > 0) {
+                return `${minutes} Minutes`;
+            } else {
+                return `${sec} Seconds`;
+            }
         }
     </script>
 </body>
