@@ -15,7 +15,7 @@
     <script>
         async function predictTime() {
             const password = document.getElementById('password').value;
-            const url = 'https://predict-time-to-crack-password.onrender.com/api/predict';
+            const url = 'https://predict-time-to-crack-password.onrender.com/api/predict'
             const resp = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -24,11 +24,13 @@
                 },
                 body: JSON.stringify({ password }),
             });
+            console.log(resp);
             if (resp.ok) {
                 const res = await resp.json();
-                const seconds = res['time_sec'];
-                const formattedTime = formatTime(seconds);
-                document.getElementById('predictionResult').innerText = `Time to crack is: ${formattedTime}`;
+                console.log(res);
+                const timeInSeconds = res['time_sec'];
+                const timeFormatted = formatTime(timeInSeconds);
+                document.getElementById('predictionResult').innerText = `Time needed to crack is: ${timeFormatted}`;
             } else {
                 console.error('Error:', resp.statusText);
                 document.getElementById('predictionResult').innerText = 'Error predicting time';
@@ -36,24 +38,13 @@
         }
 
         function formatTime(seconds) {
-            const yearsPerCentury = 100;
-            const daysPerYear = 365.25; // average including leap years
-            const hoursPerDay = 24;
-            const minutesPerHour = 60;
-            const secondsPerMinute = 60;
+            const year = Math.floor(seconds / (3600 * 24 * 365));
+            const days = Math.floor(seconds % (3600 * 24 * 365) / (3600 * 24));
+            const hours = Math.floor(seconds % (3600 * 24) / 3600);
+            const minutes = Math.floor(seconds % 3600 / 60);
+            const sec = Math.floor(seconds % 60);
 
-            const centuries = Math.floor(seconds / (yearsPerCentury * daysPerYear * hoursPerDay * minutesPerHour * secondsPerMinute));
-            seconds %= (yearsPerCentury * daysPerYear * hoursPerDay * minutesPerHour * secondsPerMinute);
-            const years = Math.floor(seconds / (daysPerYear * hoursPerDay * minutesPerHour * secondsPerMinute));
-            seconds %= (daysPerYear * hoursPerDay * minutesPerHour * secondsPerMinute);
-            const days = Math.floor(seconds / (hoursPerDay * minutesPerHour * secondsPerMinute));
-            seconds %= (hoursPerDay * minutesPerHour * secondsPerMinute);
-            const hours = Math.floor(seconds / (minutesPerHour * secondsPerMinute));
-            seconds %= (minutesPerHour * secondsPerMinute);
-            const minutes = Math.floor(seconds / secondsPerMinute);
-            seconds = Math.floor(seconds % secondsPerMinute);
-
-            return `${centuries} centuries, ${years} years, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+            return `${year} Years, ${days} Days, ${hours} Hours, ${minutes} Minutes, and ${sec} Seconds`;
         }
     </script>
 </body>
