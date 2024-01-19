@@ -38,26 +38,43 @@
         }
 
         function formatTime(seconds) {
-            const centuries = Math.floor(seconds / (3600 * 24 * 365 * 100));
-            const years = Math.floor(seconds % (3600 * 24 * 365 * 100) / (3600 * 24 * 365));
-            const days = Math.floor(seconds % (3600 * 24 * 365) / (3600 * 24));
-            const hours = Math.floor(seconds % (3600 * 24) / 3600);
-            const minutes = Math.floor(seconds % 3600 / 60);
-            const sec = Math.floor(seconds % 60);
+            let timeString = '';
 
+            const centuries = Math.floor(seconds / (3600 * 24 * 365 * 100));
             if (centuries > 0) {
-                return `${centuries} Centuries`;
-            } else if (years > 0) {
-                return `${years} Years`;
-            } else if (days > 0) {
-                return `${days} Days`;
-            } else if (hours > 0) {
-                return `${hours} Hours`;
-            } else if (minutes > 0) {
-                return `${minutes} Minutes`;
-            } else {
-                return `${sec} Seconds`;
+                timeString += `${centuries} Centuries, `;
+                seconds %= (3600 * 24 * 365 * 100);
             }
+
+            const years = Math.floor(seconds / (3600 * 24 * 365));
+            if (years > 0) {
+                timeString += `${years} Years, `;
+                seconds %= (3600 * 24 * 365);
+            }
+
+            const days = Math.floor(seconds / (3600 * 24));
+            if (days > 0) {
+                timeString += `${days} Days, `;
+                seconds %= (3600 * 24);
+            }
+
+            const hours = Math.floor(seconds / 3600);
+            if (hours > 0) {
+                timeString += `${hours} Hours, `;
+                seconds %= 3600;
+            }
+
+            const minutes = Math.floor(seconds / 60);
+            if (minutes > 0) {
+                timeString += `${minutes} Minutes, `;
+                seconds %= 60;
+            }
+
+            if (seconds > 0) {
+                timeString += `${seconds} Seconds`;
+            }
+
+            return timeString.replace(/, $/, '');
         }
     </script>
 </body>
